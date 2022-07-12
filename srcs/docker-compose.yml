@@ -1,0 +1,64 @@
+version: '3'
+services:
+
+  mariadb:
+    build: mariadb/
+    container_name: mariadb
+    ports:
+      - "3306:3306"
+    networks:
+      - private
+    volumes:
+      - type: volume
+        source: db
+        target: "/var/lib/mysql"
+        read_only: false
+    # restart: always
+
+  nginx:
+    build: nginx/
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - public
+      - private
+    depends_on:
+      - wordpress
+    volumes:
+      - type: volume
+        source: www
+        target: "/var/www/html"
+        read_only: false
+    environment:
+      DOMAIN: ${DOMAIN}
+    # restart: always
+
+  wordpress:
+    build: wordpress/
+    container_name: wordpress
+    ports:
+      - "9000:9000"
+    networks:
+      - private
+    depends_on:
+      - mariadb
+    volumes:
+      - type: volume
+        source: www
+        target: "/var/www/html"
+        read_only: false
+    environment:
+      DOMAIN: ${DOMAIN}
+    # restart: always
+
+volumes:
+  www:
+    name: www
+  db:
+    name: db
+
+networks:
+  public:
+  private:

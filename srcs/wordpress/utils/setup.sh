@@ -1,12 +1,17 @@
 #!/bin/sh
 
+until mariadb -hmariadb -u"$WP_DB_USER" -p"$WP_DB_PASS" "$WP_DB_NAME"; do
+	echo "Waiting for MariaDB to come online..."
+	sleep 1
+done
+
 echo "Domain: ${DOMAIN}"
 
 echo "Downloading Wordpress..."
 wp core download --allow-root
 
 echo "Configuring Wordpress..."
-wp core config --dbhost="$MDB_HOST" --dbname="$WP_DB_NAME" --dbuser="$WP_DB_USER" --dbpass="$WP_DB_PASS" --dbcharset="utf8" --dbcollate="utf8_general_ci" --allow-root
+wp core config --dbhost="mariadb" --dbname="$WP_DB_NAME" --dbuser="$WP_DB_USER" --dbpass="$WP_DB_PASS" --dbcharset="utf8" --dbcollate="utf8_general_ci" --allow-root
 
 echo "Setting permissions..."
 chmod 644 wp-config.php

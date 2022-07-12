@@ -13,6 +13,11 @@ services:
         source: db
         target: "/var/lib/mysql"
         read_only: false
+    environment:
+      MDB_ROOT_PASS: ${MDB_ROOT_PASS}
+      WP_DB_NAME: ${WP_DB_NAME}
+      WP_DB_USER: ${WP_DB_USER}
+      WP_DB_PASS: ${WP_DB_PASS}
     # restart: always
 
   nginx:
@@ -51,6 +56,16 @@ services:
         read_only: false
     environment:
       DOMAIN: ${DOMAIN}
+      WP_BLOG_NAME: ${WP_BLOG_NAME}
+      WP_USR_NAME: ${WP_USR_NAME}
+      WP_USR_MAIL: ${WP_USR_MAIL}
+      WP_USR_PASS: ${WP_USR_PASS}
+      WP_ADM_NAME: ${WP_ADM_NAME}
+      WP_ADM_PASS: ${WP_ADM_PASS}
+      WP_ADM_MAIL: ${WP_ADM_MAIL}
+      WP_DB_NAME: ${WP_DB_NAME}
+      WP_DB_USER: ${WP_DB_USER}
+      WP_DB_PASS: ${WP_DB_PASS}
     # restart: always
 
 volumes:
@@ -61,4 +76,5 @@ volumes:
 
 networks:
   public:
+    driver: bridge
   private:

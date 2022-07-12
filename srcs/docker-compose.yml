@@ -4,33 +4,36 @@ services:
   mariadb:
     build: mariadb/
     container_name: mariadb
+    restart: unless-stopped
     ports:
       - "3306:3306"
     networks:
-      - private
+      - backend
     volumes:
       - type: volume
         source: db
         target: "/var/lib/mysql"
         read_only: false
+    #    - "/tmp/incesql:/var/lib/mysql"
     environment:
       MDB_ROOT_PASS: ${MDB_ROOT_PASS}
       WP_DB_NAME: ${WP_DB_NAME}
       WP_DB_USER: ${WP_DB_USER}
       WP_DB_PASS: ${WP_DB_PASS}
-    # restart: always
 
   nginx:
     build: nginx/
     container_name: nginx
+    restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
     networks:
-      - public
-      - private
+      - frontend
+      - backend
     depends_on:
       - wordpress
+    volumes:
     volumes:
       - type: volume
         source: www
@@ -38,15 +41,15 @@ services:
         read_only: false
     environment:
       DOMAIN: ${DOMAIN}
-    # restart: always
 
   wordpress:
     build: wordpress/
     container_name: wordpress
+    restart: unless-stopped
     ports:
       - "9000:9000"
     networks:
-      - private
+      - backend
     depends_on:
       - mariadb
     volumes:
@@ -66,7 +69,6 @@ services:
       WP_DB_NAME: ${WP_DB_NAME}
       WP_DB_USER: ${WP_DB_USER}
       WP_DB_PASS: ${WP_DB_PASS}
-    # restart: always
 
 volumes:
   www:
@@ -75,6 +77,6 @@ volumes:
     name: db
 
 networks:
-  public:
+  frontend:
     driver: bridge
-  private:
+  backend:

@@ -8,7 +8,9 @@ echo "Replacement done. File:"
 cat /etc/nginx/conf.d/default.conf | grep "server_name"
 
 echo "Disabling nginx daemon..."
-echo "daemon off;" >> /etc/nginx/nginx.conf
+if ! grep -Fxq "daemon off;" /etc/nginx/nginx.conf; then
+	echo "daemon off;" >> /etc/nginx/nginx.conf
+fi
 
 echo "Generating SSL certificate..."
 # https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-nginx-in-ubuntu-16-04
@@ -19,9 +21,11 @@ echo "Generating SSL certificate..."
 # OU = Organization Unit
 # CN = Common Name (domain)
 mkdir -p /etc/nginx/ssl
-openssl req -newkey rsa:2048 -x509 -days 365 -nodes \
-	-keyout /etc/nginx/ssl/server.key -out /etc/nginx/ssl/server.pem \
-	-subj "/C=NL/ST=Noord-Holland/L=Amsterdam/O=Codam/OU=Students/CN=${DOMAIN}"
+if [ ! -f "/etc/nginx/ssl/server.key" ] || [ ! -f "/etc/nginx/ssl/server.pem" ]; then
+	openssl req -newkey rsa:2048 -x509 -days 365 -nodes \
+		-keyout /etc/nginx/ssl/server.key -out /etc/nginx/ssl/server.pem \
+		-subj "/C=NL/ST=Noord-Holland/L=Amsterdam/O=Codam/OU=Students/CN=${DOMAIN}"
+fi
 
 # Start nginx in the foreground
 echo "Starting nginx now."

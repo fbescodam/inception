@@ -49,8 +49,10 @@ rm -f /var/lib/mysql/init.sql
 echo "Mariadb set up."
 
 # Enable remote login
-sed -i "s/skip-networking/# skip-networking/" /etc/mysql/my.cnf
-sed -i 's/bind-address/bind-address = 0.0.0.0 #/i' /etc/mysql/mariadb.conf.d/50-server.cnf
+sed -i "/^skip-networking/c\# skip-networking" /etc/mysql/my.cnf
+sed -i '/^bind-address/c\bind-address = 0.0.0.0' /etc/mysql/mariadb.conf.d/50-server.cnf
+cat /etc/mysql/my.cnf | grep "skip-networking"
+cat /etc/mysql/mariadb.conf.d/50-server.cnf | grep "bind-address"
 
 # Enable logs
 echo "[mysqld_safe]" >> /etc/mysql/my.cnf

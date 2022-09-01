@@ -50,7 +50,7 @@ echo "Mariadb set up."
 
 # Enable remote login
 sed -i "s/skip-networking/# skip-networking/" /etc/mysql/my.cnf
-sed -i "s/.*bind-address\s*=.*/bind-address=0.0.0.0/" /etc/mysql/my.cnf
+sed -i 's/bind-address/bind-address = 0.0.0.0 #/i' /etc/mysql/mariadb.conf.d/50-server.cnf
 
 # Enable logs
 echo "[mysqld_safe]" >> /etc/mysql/my.cnf
@@ -66,3 +66,4 @@ echo "general_log=1" >> /etc/mysql/my.cnf
 # Start mariadb/mysql in the foreground (--console)
 echo "Starting mysql..."
 mysqld --user=mysql --console > /var/lib/mysql/fuck.log
+echo "Started mysql"

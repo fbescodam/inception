@@ -1,6 +1,22 @@
 version: '3'
-services:
 
+networks:
+  frontend:
+
+volumes:
+  vol-db:
+    driver_opts:
+      type: none
+      o: bind
+      device: ${HOME}/data/db
+
+  vol-www:
+    driver_opts:
+      type: none
+      o: bind
+      device: ${HOME}/data/www
+
+services:
   mariadb:
     build: mariadb/
     container_name: mariadb
@@ -8,18 +24,11 @@ services:
     expose:
       - 3306
     networks:
-      - backend
+      - frontend
     volumes:
-      - type: volume
-        source: db
-        target: "/var/lib/mysql"
-        read_only: false
-    #    - "/tmp/incesql:/var/lib/mysql"
-    environment:
-      MDB_ROOT_PASS: ${MDB_ROOT_PASS}
-      WP_DB_NAME: ${WP_DB_NAME}
-      WP_DB_USER: ${WP_DB_USER}
-      WP_DB_PASS: ${WP_DB_PASS}
+      - vol-db:/var/lib/mysql
+    env_file:
+      - .env
 
   wordpress:
     build: wordpress/
@@ -28,26 +37,13 @@ services:
     expose:
       - 9000
     networks:
-      - backend
+      - frontend
     depends_on:
       - mariadb
     volumes:
-      - type: volume
-        source: www
-        target: "/var/www/html"
-        read_only: false
-    environment:
-      DOMAIN: ${DOMAIN}
-      WP_BLOG_NAME: ${WP_BLOG_NAME}
-      WP_USR_NAME: ${WP_USR_NAME}
-      WP_USR_MAIL: ${WP_USR_MAIL}
-      WP_USR_PASS: ${WP_USR_PASS}
-      WP_ADM_NAME: ${WP_ADM_NAME}
-      WP_ADM_PASS: ${WP_ADM_PASS}
-      WP_ADM_MAIL: ${WP_ADM_MAIL}
-      WP_DB_NAME: ${WP_DB_NAME}
-      WP_DB_USER: ${WP_DB_USER}
-      WP_DB_PASS: ${WP_DB_PASS}
+      - vol-www:/var/www/html
+    env_file:
+      - .env
 
   nginx:
     build: nginx/
@@ -58,25 +54,9 @@ services:
       - "443:443"
     networks:
       - frontend
-      - backend
     depends_on:
       - wordpress
     volumes:
-    volumes:
-      - type: volume
-        source: www
-        target: "/var/www/html"
-        read_only: false
-    environment:
-      DOMAIN: ${DOMAIN}
-
-volumes:
-  www:
-    name: www
-  db:
-    name: db
-
-networks:
-  frontend:
-    driver: bridge
-  backend:
+      - vol-www:/var/www/html
+    env_file:
+      - .env

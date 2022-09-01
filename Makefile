@@ -6,7 +6,7 @@
 #    By: fbes <fbes@student.codam.nl>                 +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/07/12 12:49:35 by fbes          #+#    #+#                  #
-#    Updated: 2022/07/12 15:57:16 by fbes          ########   odam.nl          #
+#    Updated: 2022/09/01 20:25:37 by fbes          ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ prune:
 	docker system prune -f
 
 clean: down prune
-	rm -rf '~/Desktop/Inception'
+	rm -rf '~/data'
 
 re: clean all
 

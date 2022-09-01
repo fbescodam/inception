@@ -1,7 +1,7 @@
 #!/bin/sh
 
-until mariadb -hmariadb -u"$WP_DB_USER" -p"$WP_DB_PASS" "$WP_DB_NAME"; do
-	echo "Waiting for MariaDB to come online..."
+until mysqladmin ping -hmariadb --silent; do
+echo "Waiting for MariaDB to come online..."
 	sleep 1
 done
 

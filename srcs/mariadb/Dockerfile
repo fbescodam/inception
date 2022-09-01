@@ -8,5 +8,5 @@ RUN apt update && apt upgrade -y
 RUN apt install -y mariadb-server mariadb-client
 
 # Set up mysql/mariadb and start in the foreground
-COPY utils/setup.sh /tmp/setup.sh
+COPY tools/setup.sh /tmp/setup.sh
 CMD ["sh", "/tmp/setup.sh"]

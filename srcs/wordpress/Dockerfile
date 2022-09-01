@@ -15,5 +15,5 @@ RUN cp wp-cli.phar /usr/local/bin/wp
 
 # Set up and run wordpress
 WORKDIR /var/www/html
-COPY utils/setup.sh /tmp/setup.sh
+COPY tools/setup.sh /tmp/setup.sh
 CMD ["sh", "/tmp/setup.sh"]

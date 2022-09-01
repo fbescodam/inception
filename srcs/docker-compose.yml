@@ -5,8 +5,8 @@ services:
     build: mariadb/
     container_name: mariadb
     restart: unless-stopped
-    ports:
-      - "3306:3306"
+    expose:
+      - 3306
     networks:
       - backend
     volumes:
@@ -20,27 +20,6 @@ services:
       WP_DB_NAME: ${WP_DB_NAME}
       WP_DB_USER: ${WP_DB_USER}
       WP_DB_PASS: ${WP_DB_PASS}
-
-  nginx:
-    build: nginx/
-    container_name: nginx
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-    networks:
-      - frontend
-      - backend
-    depends_on:
-      - wordpress
-    volumes:
-    volumes:
-      - type: volume
-        source: www
-        target: "/var/www/html"
-        read_only: false
-    environment:
-      DOMAIN: ${DOMAIN}
 
   wordpress:
     build: wordpress/
@@ -69,6 +48,27 @@ services:
       WP_DB_NAME: ${WP_DB_NAME}
       WP_DB_USER: ${WP_DB_USER}
       WP_DB_PASS: ${WP_DB_PASS}
+
+  nginx:
+    build: nginx/
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - frontend
+      - backend
+    depends_on:
+      - wordpress
+    volumes:
+    volumes:
+      - type: volume
+        source: www
+        target: "/var/www/html"
+        read_only: false
+    environment:
+      DOMAIN: ${DOMAIN}
 
 volumes:
   www:

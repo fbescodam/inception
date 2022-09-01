@@ -17,7 +17,7 @@ echo "Setting permissions..."
 chmod 644 wp-config.php
 
 echo "Installing Wordpress..."
-wp core install --url="$DOMAIN" --title="$WP_BLOG_NAME" --admin_name="$WP_ADM_NAME" --admin_password="$WP_ADM_PASS" --admin_email="$WP_ADM_EMAIL" --skip-email --allow-root
+wp core install --url="$DOMAIN" --title="$WP_BLOG_NAME" --admin_name="$WP_ADM_NAME" --admin_password="$WP_ADM_PASS" --admin_email="$WP_ADM_MAIL" --skip-email --allow-root
 
 echo "Creating Wordpress user $WP_USER_NAME..."
 wp user create "$WP_USR_NAME" "$WP_USR_MAIL" --user_pass="$WP_USR_PASS" --role=author --allow-root
@@ -29,6 +29,11 @@ wp user create "$WP_USR_NAME" "$WP_USR_MAIL" --user_pass="$WP_USR_PASS" --role=a
 # chmod 775 uploads/
 
 echo "Wordpress was successfully installed."
+echo "Configuring php-fpm..."
+sed -i '/^listen /c\listen = 9000' /etc/php/7.3/fpm/pool.d/www.conf
+cat /etc/php/7.3/fpm/pool.d/www.conf | grep "listen ="
 
 # Launch php-fpm in the foreground (-F)
-php-fpm -F
+echo "Launching php-fpm..."
+mkdir -p /run/php
+/usr/sbin/php-fpm7.3 -F

@@ -55,15 +55,15 @@ cat /etc/mysql/my.cnf | grep "skip-networking"
 cat /etc/mysql/mariadb.conf.d/50-server.cnf | grep "bind-address"
 
 # Enable logs
-echo "[mysqld_safe]" >> /etc/mysql/my.cnf
-echo "log_error=/var/lib/mysql/error.log" >> /etc/mysql/my.cnf
-echo "general_log_file=/var/lib/mysql/gen.log" >> /etc/mysql/my.cnf
-echo "general_log=1g" >> /etc/mysql/my.cnf
-echo "" >> /etc/mysql/my.cnf
-echo "[mysqld]" >> /etc/mysql/my.cnf
-echo "log_error=/var/lib/mysql/error.log" >> /etc/mysql/my.cnf
-echo "general_log_file=/var/lib/mysql/gen.log" >> /etc/mysql/my.cnf
-echo "general_log=1" >> /etc/mysql/my.cnf
+# echo "[mysqld_safe]" >> /etc/mysql/my.cnf
+# echo "log_error=/var/lib/mysql/error.log" >> /etc/mysql/my.cnf
+# echo "general_log_file=/var/lib/mysql/gen.log" >> /etc/mysql/my.cnf
+# echo "general_log=1g" >> /etc/mysql/my.cnf
+# echo "" >> /etc/mysql/my.cnf
+# echo "[mysqld]" >> /etc/mysql/my.cnf
+# echo "log_error=/var/lib/mysql/error.log" >> /etc/mysql/my.cnf
+# echo "general_log_file=/var/lib/mysql/gen.log" >> /etc/mysql/my.cnf
+# echo "general_log=1" >> /etc/mysql/my.cnf
 
 # Start mariadb/mysql in the foreground (--console)
 echo "Starting mysql..."

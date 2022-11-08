@@ -2,10 +2,10 @@
 
 # Add domain to configuration
 echo "Replacing \"@@replace@@\" with \"${DOMAIN}\"..."
-sed -i "s/@@replace@@/${DOMAIN}/" /etc/nginx/conf.d/default.conf
+sed -i "s/@@replace@@/${DOMAIN}/" /etc/nginx/sites-enabled/default
 
 echo "Replacement done. File:"
-cat /etc/nginx/conf.d/default.conf | grep "server_name"
+cat /etc/nginx/sites-enabled/default | grep "server_name"
 
 echo "Disabling nginx daemon..."
 if ! grep -Fxq "daemon off;" /etc/nginx/nginx.conf; then

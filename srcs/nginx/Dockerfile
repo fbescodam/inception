@@ -8,7 +8,7 @@ RUN apt update && apt upgrade -y
 RUN apt install -y nginx openssl
 
 # Copy configuration and set up domain name
-COPY conf/nginx.conf /etc/nginx/conf.d/default.conf
+COPY conf/nginx.conf /etc/nginx/sites-enabled/default
 
 # Set up and start nginx
 WORKDIR /etc/nginx

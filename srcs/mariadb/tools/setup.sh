@@ -2,7 +2,7 @@
 
 # Initialize mysql lib dir
 mkdir -p /var/lib/mysql
-rm -rf /var/lib/mysql/*
+# rm -rf /var/lib/mysql/*
 
 # Initialize mysqld socket dir
 mkdir -p /run/mysqld
@@ -67,5 +67,4 @@ cat /etc/mysql/mariadb.conf.d/50-server.cnf | grep "bind-address"
 
 # Start mariadb/mysql in the foreground (--console)
 echo "Starting mysql..."
-mysqld --user=mysql --console > /var/lib/mysql/fuck.log
-echo "Started mysql"
+mysqld --user=mysql --console > /var/lib/mysql/sql.log

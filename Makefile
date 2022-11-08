@@ -6,7 +6,7 @@
 #    By: fbes <fbes@student.codam.nl>                 +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/07/12 12:49:35 by fbes          #+#    #+#                  #
-#    Updated: 2022/09/08 16:48:52 by fbes          ########   odam.nl          #
+#    Updated: 2022/11/08 14:45:43 by fbes          ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,8 +31,8 @@ prune:
 	docker system prune --force --volumes
 
 clean: prune
-	rm -rf '~/data'
+	rm -rf "~/data"
 
 re: clean all
 
-.PHONY: all $(NAME)
+.PHONY: all $(NAME) clean re up down prune
